@@ -781,9 +781,11 @@ public class RNFetchBlobReq extends BroadcastReceiver implements Runnable {
                             return;
                         }
                         String contentUri = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-                        if ( contentUri != null ) {
+                        if ( contentUri != null &&
+                                options.addAndroidDownloads.hasKey("mime") &&
+                                options.addAndroidDownloads.getString("mime").contains("image")) {
                             Uri uri = Uri.parse(contentUri);
-                            Cursor cursor = appCtx.getContentResolver().query(uri, new String[]{android.provider.MediaStore.Files.FileColumns.DATA}, null, null, null);
+                            Cursor cursor = appCtx.getContentResolver().query(uri, new String[]{android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null);
                             // use default destination of DownloadManager
                             if (cursor != null) {
                                 cursor.moveToFirst();
